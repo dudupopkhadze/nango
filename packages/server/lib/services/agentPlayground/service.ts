@@ -6,27 +6,27 @@ import db from '@nangohq/database';
 import { buildTagsFromEndUser, configService, connectionService, getProvider, getProviders, sharedCredentialsService } from '@nangohq/shared';
 import { Err, getLogger, metrics, nanoid, Ok, report, stringifyError } from '@nangohq/utils';
 
-import { withConnectionsCreatedInSession } from '../controllers/agent/mcp/sessionConnection.js';
-import { createAgentSessionMcpServer, TOOL_NAME_SEPARATOR } from '../controllers/agent/mcp/sessionServer.js';
-import { postAgentSessionsBodySchema } from '../controllers/agent/postSessions.js';
-import { recordIntegrationCreated } from '../hooks/auditIntegration.js';
-import { getOrchestrator } from '../utils/utils.js';
-import { buildInstructions } from './agentPlayground.instructions.js';
-import { createPlaygroundModel } from './agentPlaygroundModel.service.js';
-import { modelErrorCategory, modelUnavailableError } from './agentPlaygroundModelError.js';
-import { labelFirstMessage } from './agentPlaygroundRequest.js';
-import { SET_UP_INTEGRATIONS_TOOL, setUpIntegrationsTool, stopAfterSetUp } from './agentPlaygroundSetUpTool.js';
-import { PLAYGROUND_USER_TAG_KEY, sessionOwner } from './agentPlaygroundTags.js';
-import { isUsableOutcome, trackIntegrationSetup, trackPlaygroundTurn } from './agentPlaygroundUsage.service.js';
-import * as agentSessionService from './agentSession.service.js';
-import { trackAgentSessionCreated } from './agentSessionAnalytics.service.js';
-import { getInstantSetup, needsSetupFields } from './instantSetup.js';
-import integrationService from './integration.service.js';
+import { withConnectionsCreatedInSession } from '../../controllers/agent/mcp/sessionConnection.js';
+import { createAgentSessionMcpServer, TOOL_NAME_SEPARATOR } from '../../controllers/agent/mcp/sessionServer.js';
+import { postAgentSessionsBodySchema } from '../../controllers/agent/postSessions.js';
+import { recordIntegrationCreated } from '../../hooks/auditIntegration.js';
+import { getOrchestrator } from '../../utils/utils.js';
+import * as agentSessionService from '../agentSession.service.js';
+import { trackAgentSessionCreated } from '../agentSessionAnalytics.service.js';
+import { getInstantSetup, needsSetupFields } from '../instantSetup.js';
+import integrationService from '../integration.service.js';
+import { buildInstructions } from './instructions.js';
+import { createPlaygroundModel } from './model.service.js';
+import { modelErrorCategory, modelUnavailableError } from './modelError.js';
+import { labelFirstMessage } from './request.js';
+import { SET_UP_INTEGRATIONS_TOOL, setUpIntegrationsTool, stopAfterSetUp } from './setUpTool.js';
+import { PLAYGROUND_USER_TAG_KEY, sessionOwner } from './tags.js';
+import { isUsableOutcome, trackIntegrationSetup, trackPlaygroundTurn } from './usage.service.js';
 
-import type { ModelErrorCategory } from './agentPlaygroundModelError.js';
-import type { PlaygroundRequest } from './agentPlaygroundRequest.js';
-import type { CatalogEntry } from './agentPlaygroundSetUpTool.js';
-import type { PlaygroundStep, PlaygroundTurn, PlaygroundTurnOutcome } from './agentPlaygroundUsage.service.js';
+import type { ModelErrorCategory } from './modelError.js';
+import type { PlaygroundRequest } from './request.js';
+import type { CatalogEntry } from './setUpTool.js';
+import type { PlaygroundStep, PlaygroundTurn, PlaygroundTurnOutcome } from './usage.service.js';
 import type { AuditAttribution } from '@nangohq/audit';
 import type {
     AgentPlaygroundDataParts,
